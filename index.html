@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Portal oficial del sistema de trámite documentario de la Municipalidad Distrital de Santo Domingo de los Olleros">
+    <meta name="keywords" content="tramites, documentos, municipalidad, santo domingo de los olleros, Lima, SGD">
+    <title>Portal de Trámite Documentario — MDSDO</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+
+    <style>
+    /* ── RESET & TOKENS ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+        --navy:   #0B3D6E;
+        --blue:   #1564A8;
+        --sky:    #3B9DE1;
+        --gold:   #F5A623;
+        --amber:  #E8870E;
+        --white:  #FFFFFF;
+        --off:    #F4F7FB;
+        --slate:  #2C3A50;
+        --muted:  #6B7A93;
+        --border: #DDE4EF;
+        --card-bg:#FFFFFF;
+        --body-bg:#F4F7FB;
+        --text:   #1A2340;
+
+        --font-display: 'Playfair Display', Georgia, serif;
+        --font-body:    'DM Sans', 'Segoe UI', sans-serif;
+
+        --radius-sm:  8px;
+        --radius-md: 16px;
+        --radius-lg: 24px;
+        --shadow-sm: 0 2px 8px rgba(11,61,110,.08);
+        --shadow-md: 0 8px 32px rgba(11,61,110,.12);
+        --shadow-lg: 0 20px 60px rgba(11,61,110,.18);
+
+        --ease: cubic-bezier(.4,0,.2,1);
+    }
+
+    [data-theme="dark"] {
+        --navy:   #0D4F8C;
+        --blue:   #2278C8;
+        --sky:    #5AB5F5;
+        --white:  #FFFFFF;
+        --off:    #0F1A2E;
+        --slate:  #CDD8EC;
+        --muted:  #8A9EC0;
+        --border: #1E3050;
+        --card-bg:#162032;
+        --body-bg:#0B1424;
+        --text:   #E8EDF8;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+        font-family: var(--font-body);
+        background: var(--body-bg);
+        color: var(--text);
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        transition: background .4s var(--ease), color .4s var(--ease);
+    }
+
+    /* ── NOISE OVERLAY ──────────────────────────────────────── */
+    body::before {
+        content: '';
+        position: fixed; inset: 0;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        z-index: 9999;
+        opacity: .4;
+    }
+
+    /* ── UTILITY ────────────────────────────────────────────── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── TOP STRIP ──────────────────────────────────────────── */
+    .top-strip {
+        background: var(--navy);
+        color: rgba(255,255,255,.7);
+        font-size: .78rem;
+        padding: .4rem 0;
+        letter-spacing: .03em;
+    }
+    .top-strip .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .top-strip a { color: rgba(255,255,255,.85); text-decoration: none; }
+    .top-strip a:hover { color: var(--gold); }
+
+    /* ── NAVBAR ─────────────────────────────────────────────── */
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255,255,255,.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+        transition: background .4s var(--ease), border-color .4s var(--ease);
+    }
+    [data-theme="dark"] .navbar {
+        background: rgba(12,20,36,.95);
+    }
+    .navbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        padding: .9rem 0;
+    }
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: .7rem;
+        text-decoration: none;
+        color: var(--navy);
+        font-weight: 700;
+        font-size: .92rem;
+        line-height: 1.3;
+        max-width: 280px;
+    }
+    [data-theme="dark"] .brand { color: var(--sky); }
+    .brand img { width: 36px; height: 36px; object-fit: contain; flex-shrink: 0; }
+    .brand span { display: block; }
+
+    .nav-links {
+        display: flex;
+        list-style: none;
+        gap: .25rem;
+        align-items: center;
+    }
+    .nav-links a {
+        display: flex;
+        align-items: center;
+        gap: .4rem;
+        padding: .5rem .9rem;
+        border-radius: var(--radius-sm);
+        font-size: .88rem;
+        font-weight: 500;
+        color: var(--slate);
+        text-decoration: none;
+        transition: all .25s var(--ease);
+    }
+    [data-theme="dark"] .nav-links a { color: var(--muted); }
+    .nav-links a:hover, .nav-links a.active {
+        background: var(--navy);
+        color: #fff;
+    }
+    .nav-links a i { font-size: .8rem; }
+
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+    }
+    .btn-theme {
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        border: 1.5px solid var(--border);
+        background: var(--card-bg);
+        color: var(--slate);
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: .9rem;
+        transition: all .25s var(--ease);
+    }
+    .btn-theme:hover { border-color: var(--navy); color: var(--navy); transform: rotate(20deg); }
+    [data-theme="dark"] .btn-theme { color: var(--sky); border-color: var(--border); }
+
+    .btn-mobile-menu {
+        display: none;
+        width: 38px; height: 38px;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid var(--border);
+        background: transparent;
+        cursor: pointer;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+    .btn-mobile-menu span {
+        display: block; width: 18px; height: 2px;
+        background: var(--slate);
+        border-radius: 2px;
+        transition: all .3s var(--ease);
+    }
+
+    @media (max-width: 768px) {
+        .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; gap: .25rem; }
+        .nav-links.open { display: flex; }
+        .btn-mobile-menu { display: flex; }
+        .brand { font-size: .82rem; max-width: 220px; }
+    }
+
+    /* ── HERO ────────────────────────────────────────────────── */
+    .hero {
+        position: relative;
+        min-height: 92vh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        padding: 5rem 0 3rem;
+    }
+    .hero-bg {
+        position: absolute; inset: 0;
+        background: url('santodomingo.png') center/cover no-repeat;
+        filter: brightness(.35) saturate(1.2);
+        transition: filter .4s var(--ease);
+    }
+    [data-theme="dark"] .hero-bg { filter: brightness(.2) saturate(.8); }
+    .hero-overlay {
+        position: absolute; inset: 0;
+        background: linear-gradient(
+            135deg,
+            rgba(11,61,110,.85) 0%,
+            rgba(21,100,168,.7) 40%,
+            rgba(245,166,35,.15) 100%
+        );
+    }
+    .hero-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+    }
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+    }
+    @media (max-width: 900px) {
+        .hero-content { grid-template-columns: 1fr; text-align: center; }
+        .hero-visual { display: none; }
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        background: rgba(245,166,35,.15);
+        border: 1px solid rgba(245,166,35,.4);
+        color: var(--gold);
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        padding: .35rem .85rem;
+        border-radius: 50px;
+        margin-bottom: 1.5rem;
+        animation: fadeUp .6s var(--ease) .1s both;
+    }
+    .hero-badge i { font-size: .75rem; }
+
+    .hero-title {
+        font-family: var(--font-display);
+        font-size: clamp(2.4rem, 5vw, 3.8rem);
+        font-weight: 900;
+        color: #fff;
+        line-height: 1.1;
+        margin-bottom: 1.25rem;
+        animation: fadeUp .6s var(--ease) .2s both;
+    }
+    .hero-title em {
+        font-style: normal;
+        background: linear-gradient(90deg, var(--gold), var(--sky));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-sub {
+        font-size: 1.05rem;
+        color: rgba(255,255,255,.82);
+        max-width: 520px;
+        margin-bottom: 2.5rem;
+        animation: fadeUp .6s var(--ease) .3s both;
+    }
+    @media (max-width: 900px) { .hero-sub { margin: 0 auto 2rem; } }
+
+    .hero-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        animation: fadeUp .6s var(--ease) .4s both;
+    }
+    @media (max-width: 900px) { .hero-actions { justify-content: center; } }
+
+    .btn {
+        display: inline-flex; align-items: center; gap: .5rem;
+        padding: .75rem 1.6rem;
+        border-radius: 50px;
+        font-family: var(--font-body);
+        font-size: .9rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        transition: all .25s var(--ease);
+    }
+    .btn-primary {
+        background: var(--gold);
+        color: var(--navy);
+    }
+    .btn-primary:hover {
+        background: var(--amber);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(245,166,35,.4);
+    }
+    .btn-outline {
+        background: rgba(255,255,255,.1);
+        color: #fff;
+        border: 1.5px solid rgba(255,255,255,.35);
+        backdrop-filter: blur(8px);
+    }
+    .btn-outline:hover {
+        background: rgba(255,255,255,.2);
+        border-color: #fff;
+        transform: translateY(-2px);
+    }
+    .btn-blue {
+        background: var(--blue);
+        color: #fff;
+    }
+    .btn-blue:hover {
+        background: var(--navy);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(11,61,110,.35);
+    }
+
+    /* Quick access pills */
+    .quick-pills {
+        display: flex;
+        gap: .6rem;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+        animation: fadeUp .6s var(--ease) .5s both;
+    }
+    @media (max-width: 900px) { .quick-pills { justify-content: center; } }
+    .quick-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        padding: .45rem 1rem;
+        border-radius: 50px;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.22);
+        color: rgba(255,255,255,.9);
+        font-size: .82rem;
+        font-weight: 500;
+        text-decoration: none;
+        backdrop-filter: blur(6px);
+        transition: all .25s var(--ease);
+    }
+    .quick-pill:hover {
+        background: rgba(255,255,255,.22);
+        border-color: var(--gold);
+        color: var(--gold);
+        transform: translateY(-2px);
+    }
+    .quick-pill i { font-size: .75rem; }
+
+    /* Hero visual */
+    .hero-visual {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeUp .8s var(--ease) .3s both;
+    }
+    .hero-visual::before {
+        content: '';
+        position: absolute;
+        width: 340px; height: 340px;
+        background: radial-gradient(circle, rgba(245,166,35,.2) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: pulse 4s ease-in-out infinite;
+    }
+    .hero-escudo {
+        width: 280px;
+        height: auto;
+        filter: drop-shadow(0 20px 60px rgba(0,0,0,.5));
+        animation: float 6s ease-in-out infinite;
+        position: relative;
+        z-index: 1;
+    }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:.6} 50%{transform:scale(1.1);opacity:1} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    .scroll-hint {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255,255,255,.5);
+        font-size: .8rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .4rem;
+        animation: bounce 2s ease-in-out infinite;
+        cursor: pointer;
+        z-index: 2;
+    }
+    .scroll-hint i { font-size: .75rem; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-8px)} }
+
+    /* Stats bar */
+    .stats-bar {
+        position: relative;
+        z-index: 2;
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem 0;
+        transition: background .4s var(--ease);
+    }
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+    }
+    @media (max-width: 700px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: .75rem 1rem;
+        border-radius: var(--radius-md);
+        transition: background .25s var(--ease);
+    }
+    .stat-item:hover { background: var(--off); }
+    [data-theme="dark"] .stat-item:hover { background: rgba(255,255,255,.04); }
+    .stat-icon {
+        width: 44px; height: 44px;
+        border-radius: var(--radius-sm);
+        background: linear-gradient(135deg, var(--blue), var(--sky));
+        display: flex; align-items: center; justify-content: center;
+        color: #fff;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    .stat-num { font-size: 1.4rem; font-weight: 700; color: var(--navy); line-height: 1; margin-bottom: .1rem; }
+    [data-theme="dark"] .stat-num { color: var(--sky); }
+    .stat-label { font-size: .78rem; color: var(--muted); font-weight: 500; }
+
+    /* ── SECTIONS ────────────────────────────────────────────── */
+    section.s { padding: 5rem 0; }
+    section.s:nth-child(even) { background: var(--off); }
+    [data-theme="dark"] section.s:nth-child(even) { background: rgba(255,255,255,.02); }
+
+    .section-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        color: var(--blue);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        margin-bottom: .75rem;
+    }
+    [data-theme="dark"] .section-tag { color: var(--sky); }
+    .section-tag::before {
+        content: '';
+        display: block;
+        width: 18px; height: 2px;
+        background: currentColor;
+        border-radius: 2px;
+    }
+
+    .section-title {
+        font-family: var(--font-display);
+        font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+        font-weight: 700;
+        color: var(--navy);
+        line-height: 1.2;
+        margin-bottom: .75rem;
+    }
+    [data-theme="dark"] .section-title { color: #fff; }
+
+    .section-sub {
+        font-size: 1rem;
+        color: var(--muted);
+        max-width: 560px;
+        margin-bottom: 3.5rem;
+    }
+
+    .section-head { margin-bottom: 3rem; }
+
+    /* ── INFO CARDS ─────────────────────────────────────────── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+    .info-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        transition: box-shadow .3s var(--ease), transform .3s var(--ease);
+        position: relative;
+        overflow: hidden;
+    }
+    .info-card::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--blue), var(--sky));
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .info-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+
+    .info-card-icon {
+        width: 52px; height: 52px;
+        border-radius: var(--radius-md);
+        background: linear-gradient(135deg, var(--navy), var(--blue));
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 1.3rem;
+        margin-bottom: 1.25rem;
+    }
+    .info-card h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--navy);
+        margin-bottom: 1.25rem;
+    }
+    [data-theme="dark"] .info-card h3 { color: #fff; }
+
+    .feat-list { list-style: none; }
+    .feat-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: .75rem;
+        padding: .6rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: .9rem;
+        color: var(--slate);
+        transition: transform .2s var(--ease);
+    }
+    [data-theme="dark"] .feat-list li { color: var(--muted); border-color: var(--border); }
+    .feat-list li:last-child { border-bottom: none; }
+    .feat-list li:hover { transform: translateX(4px); }
+    .feat-list li::before {
+        content: '';
+        display: flex;
+        flex-shrink: 0;
+        width: 20px; height: 20px;
+        background: linear-gradient(135deg, var(--blue), var(--sky));
+        border-radius: 50%;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 6l3 3 5-5' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        margin-top: 2px;
+    }
+
+    /* ── MODULE CARDS ────────────────────────────────────────── */
+    .modules-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .mod-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 1.75rem;
+        cursor: pointer;
+        transition: all .3s var(--ease);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+    .mod-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, var(--navy), var(--blue));
+        opacity: 0;
+        transition: opacity .3s var(--ease);
+    }
+    .mod-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--blue); }
+    .mod-card:hover::before { opacity: .04; }
+    .mod-card:hover .mod-btn { background: var(--gold); color: var(--navy); }
+
+    .mod-num {
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .1em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+    }
+    .mod-icon-wrap {
+        width: 56px; height: 56px;
+        border-radius: var(--radius-md);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.4rem;
+        margin-bottom: 1.25rem;
+        position: relative;
+        z-index: 1;
+    }
+    .mod-icon-wrap.blue  { background: rgba(21,100,168,.12); color: var(--blue); }
+    .mod-icon-wrap.teal  { background: rgba(59,157,225,.12); color: var(--sky); }
+    .mod-icon-wrap.gold  { background: rgba(245,166,35,.12);  color: var(--gold); }
+    .mod-icon-wrap.green { background: rgba(34,170,100,.12);  color: #22AA64; }
+    [data-theme="dark"] .mod-icon-wrap.blue  { background: rgba(21,100,168,.2); }
+    [data-theme="dark"] .mod-icon-wrap.teal  { background: rgba(59,157,225,.2); }
+    [data-theme="dark"] .mod-icon-wrap.gold  { background: rgba(245,166,35,.2); }
+    [data-theme="dark"] .mod-icon-wrap.green { background: rgba(34,170,100,.2); }
+
+    .mod-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--navy);
+        margin-bottom: .6rem;
+        position: relative; z-index: 1;
+    }
+    [data-theme="dark"] .mod-title { color: #fff; }
+    .mod-desc {
+        font-size: .875rem;
+        color: var(--muted);
+        flex-grow: 1;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        position: relative; z-index: 1;
+    }
+    .mod-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        padding: .55rem 1.1rem;
+        border-radius: 50px;
+        background: var(--off);
+        color: var(--navy);
+        font-size: .82rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        align-self: flex-start;
+        transition: all .25s var(--ease);
+        position: relative; z-index: 1;
+    }
+    [data-theme="dark"] .mod-btn { background: rgba(255,255,255,.08); color: var(--sky); }
+    .mod-btn i { font-size: .75rem; }
+
+    /* ── TUTORIAL CARDS ──────────────────────────────────────── */
+    .tut-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+
+    .tut-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        text-align: center;
+        transition: all .3s var(--ease);
+    }
+    .tut-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+
+    .tut-icon-wrap {
+        width: 72px; height: 72px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--blue), var(--sky));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.6rem;
+        color: #fff;
+        margin: 0 auto 1.25rem;
+        box-shadow: 0 8px 24px rgba(21,100,168,.3);
+    }
+    .tut-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: .7rem; }
+    [data-theme="dark"] .tut-card h3 { color: #fff; }
+    .tut-card p { font-size: .875rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+
+    .pdf-btns { display: flex; flex-direction: column; gap: .6rem; }
+    .pdf-btns .btn { width: 100%; justify-content: center; background: var(--off); color: var(--navy); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .6rem 1rem; font-size: .85rem; }
+    [data-theme="dark"] .pdf-btns .btn { background: rgba(255,255,255,.06); color: var(--sky); border-color: var(--border); }
+    .pdf-btns .btn:hover { background: var(--blue); color: #fff; border-color: var(--blue); transform: translateY(-1px); }
+
+    /* ── FOOTER ──────────────────────────────────────────────── */
+    footer {
+        background: var(--navy);
+        color: rgba(255,255,255,.7);
+        padding: 4rem 0 0;
+    }
+    .footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr;
+        gap: 3rem;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+    .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+        margin-bottom: 1rem;
+    }
+    .footer-brand img { width: 40px; height: 40px; object-fit: contain; }
+    .footer-brand-name { font-family: var(--font-display); font-size: .95rem; font-weight: 700; color: #fff; line-height: 1.3; }
+    footer p { font-size: .875rem; line-height: 1.7; }
+    footer h5 { color: var(--gold); font-size: .85rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 1.25rem; }
+    footer a { color: rgba(255,255,255,.7); text-decoration: none; transition: color .2s; }
+    footer a:hover { color: var(--gold); }
+
+    .footer-contact p {
+        display: flex;
+        align-items: flex-start;
+        gap: .6rem;
+        margin-bottom: .75rem;
+        font-size: .85rem;
+    }
+    .footer-contact i { color: var(--gold); margin-top: .2rem; flex-shrink: 0; font-size: .85rem; }
+
+    .social-row { display: flex; gap: .6rem; margin-top: 1.25rem; }
+    .social-icon {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.1);
+        display: flex; align-items: center; justify-content: center;
+        font-size: .9rem;
+        color: rgba(255,255,255,.7);
+        text-decoration: none;
+        transition: all .25s var(--ease);
+    }
+    .social-icon:hover { background: var(--gold); color: var(--navy); transform: translateY(-3px); }
+
+    .footer-bottom {
+        padding: 1.5rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: .8rem;
+    }
+    .footer-bottom a { color: rgba(255,255,255,.5); }
+    .footer-bottom a:hover { color: var(--gold); }
+
+    /* ── SCROLL REVEAL ───────────────────────────────────────── */
+    .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity .6s var(--ease), transform .6s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* ── INTRO TEXT ──────────────────────────────────────────── */
+    .intro-block {
+        background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+        border-radius: var(--radius-lg);
+        padding: 2.5rem 3rem;
+        color: rgba(255,255,255,.9);
+        font-size: 1.05rem;
+        line-height: 1.8;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 3rem;
+    }
+    .intro-block::before {
+        content: '"';
+        position: absolute;
+        top: -1rem; left: 1.5rem;
+        font-family: var(--font-display);
+        font-size: 8rem;
+        color: rgba(255,255,255,.06);
+        line-height: 1;
+    }
+    .intro-block strong { color: var(--gold); }
+    @media (max-width: 700px) { .intro-block { padding: 1.75rem; } }
+
+    /* Progress bar at top */
+    #progress-bar {
+        position: fixed;
+        top: 0; left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--gold), var(--sky));
+        z-index: 9999;
+        width: 0%;
+        transition: width .1s linear;
+    }
+    </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- Top Strip -->
+<div class="top-strip">
+    <div class="container">
+        <span><i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:.4rem"></i>Av. Santo Domingo de los Olleros, Huarochirí, Lima, Perú</span>
+        <span>
+            <a href="mailto:alcaldia@muniolleroshuarochiri.gob.pe"><i class="fas fa-envelope" style="margin-right:.3rem"></i>alcaldia@muniolleroshuarochiri.gob.pe</a>
+            &nbsp;·&nbsp;
+            <span><i class="fas fa-clock" style="margin-right:.3rem"></i>Lun – Vie: 9:00 – 17:00</span>
+        </span>
+    </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+    <div class="container">
+        <div class="navbar-inner">
+            <a class="brand" href="#inicio">
+                <img src="logo.jpg" alt="Escudo MDSDO" onerror="this.style.display='none'">
+                <span>Municipalidad Distrital<br><strong>Santo Domingo de los Olleros</strong></span>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#inicio" class="active"><i class="fas fa-home"></i> Inicio</a></li>
+                <li><a href="#modulos"><i class="fas fa-th-large"></i> Módulos</a></li>
+                <li><a href="#tutoriales"><i class="fas fa-graduation-cap"></i> Tutoriales</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </button>
+                <button class="btn-mobile-menu" id="mobileMenu" onclick="toggleMenu()" aria-label="Menú">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section id="inicio" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-grid"></div>
+
+    <div class="container">
+        <div class="hero-content">
+            <div>
+                <div class="hero-badge"><i class="fas fa-shield-alt"></i> Portal Oficial Municipal</div>
+                <h1 class="hero-title">
+                    Sistema de<br>
+                    <em>Trámite</em><br>
+                    Documentario
+                </h1>
+                <p class="hero-sub">
+                    Plataforma digital diseñada para modernizar la gestión municipal, brindando servicios ágiles, seguros y transparentes para todos los ciudadanos de Santo Domingo de los Olleros.
+                </p>
+                <div class="hero-actions">
+                    <a href="#modulos" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Explorar Módulos
+                    </a>
+                    <a href="https://10.1.119.20:9443/mpd/inicio.do" class="btn btn-outline" target="_blank" rel="noopener">
+                        <i class="fas fa-inbox"></i> Mesa de Partes
+                    </a>
+                </div>
+                <div class="quick-pills">
+                    <a href="https://10.1.119.20:9443/sgd/login.do" class="quick-pill" target="_blank" rel="noopener">
+                        <i class="fas fa-database"></i> SGD Funcionarios
+                    </a>
+                    <a href="https://10.1.119.20:9443/consulta/inicio.do" class="quick-pill" target="_blank" rel="noopener">
+                        <i class="fas fa-search"></i> Consulta Trámites
+                    </a>
+                    <a href="https://10.1.119.20:9443/verifica/inicio.do" class="quick-pill" target="_blank" rel="noopener">
+                        <i class="fas fa-certificate"></i> Verificar Doc
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <img src="logo.jpg" alt="Escudo Municipal" class="hero-escudo" onerror="this.style.display='none'">
+            </div>
+        </div>
+    </div>
+    <div class="scroll-hint" onclick="document.getElementById('stats').scrollIntoView({behavior:'smooth'})">
+        <span>Descubrir más</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<!-- Stats Bar -->
+<div class="stats-bar" id="stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item reveal">
+                <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                <div>
+                    <div class="stat-num">5</div>
+                    <div class="stat-label">Módulos activos</div>
+                </div>
+            </div>
+            <div class="stat-item reveal reveal-delay-1">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div>
+                    <div class="stat-num">24/7</div>
+                    <div class="stat-label">Servicios en línea</div>
+                </div>
+            </div>
+            <div class="stat-item reveal reveal-delay-2">
+                <div class="stat-icon"><i class="fas fa-shield-alt"></i></div>
+                <div>
+                    <div class="stat-num">100%</div>
+                    <div class="stat-label">Seguro y auditado</div>
+                </div>
+            </div>
+            <div class="stat-item reveal reveal-delay-3">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div>
+                    <div class="stat-num">Digital</div>
+                    <div class="stat-label">Sin papel</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Info Section -->
+<section class="s">
+    <div class="container">
+        <div class="section-head reveal">
+            <div class="section-tag">¿Qué son?</div>
+            <h2 class="section-title">Sistemas de Trámite Documentario</h2>
+        </div>
+
+        <div class="intro-block reveal">
+            Los sistemas de trámite documentario son <strong>soluciones tecnológicas</strong> que facilitan la gestión integral de documentos y procedimientos administrativos, permitiendo un control eficiente, seguimiento en tiempo real y una atención más rápida, segura y transparente para los ciudadanos.
+        </div>
+
+        <div class="two-col">
+            <div class="info-card reveal reveal-delay-1">
+                <div class="info-card-icon"><i class="fas fa-bullseye"></i></div>
+                <h3>Objetivos Principales</h3>
+                <ul class="feat-list">
+                    <li>Modernizar la gestión administrativa</li>
+                    <li>Reducir tiempos de atención</li>
+                    <li>Mejorar la transparencia institucional</li>
+                    <li>Facilitar el acceso ciudadano</li>
+                    <li>Optimizar recursos municipales</li>
+                </ul>
+            </div>
+            <div class="info-card reveal reveal-delay-2">
+                <div class="info-card-icon"><i class="fas fa-users"></i></div>
+                <h3>Beneficios para los Ciudadanos</h3>
+                <ul class="feat-list">
+                    <li>Gestión de trámites completamente digital</li>
+                    <li>Seguimiento de solicitudes en tiempo real</li>
+                    <li>Menos atención presencial y menor espera</li>
+                    <li>Servicios disponibles las 24 horas, 7 días</li>
+                    <li>Documentos con validez e integridad garantizada</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modules Section -->
+<section id="modulos" class="s">
+    <div class="container">
+        <div class="section-head reveal">
+            <div class="section-tag">Plataformas</div>
+            <h2 class="section-title">Módulos del Sistema</h2>
+            <p class="section-sub">Accede a cada módulo directamente desde aquí. Todos los sistemas están integrados y disponibles en línea.</p>
+        </div>
+
+        <div class="modules-grid">
+            <div class="mod-card reveal" onclick="openModule('https://10.1.119.20:9443/sgd/login.do')">
+                <div class="mod-num">01 — SGD</div>
+                <div class="mod-icon-wrap blue"><i class="fas fa-database"></i></div>
+                <div class="mod-title">Sistema de Gestión Documental</div>
+                <p class="mod-desc">Sistema integral para la gestión de documentos y expedientes administrativos, optimizando flujos de trabajo y asegurando trazabilidad de la información.</p>
+                <button class="mod-btn"><i class="fas fa-external-link-alt"></i> Ingresar al SGD</button>
+            </div>
+
+            <div class="mod-card reveal reveal-delay-1" onclick="openModule('https://10.1.119.20:9443/mpd/inicio.do')">
+                <div class="mod-num">02 — MPD</div>
+                <div class="mod-icon-wrap teal"><i class="fas fa-inbox"></i></div>
+                <div class="mod-title">Mesa de Partes Digital</div>
+                <p class="mod-desc">Plataforma digital para la recepción y registro de documentos, facilitando la presentación de solicitudes en línea con plena trazabilidad.</p>
+                <button class="mod-btn"><i class="fas fa-external-link-alt"></i> Acceder a MPD</button>
+            </div>
+
+            <div class="mod-card reveal reveal-delay-2" onclick="openModule('https://10.1.119.20:9443/mpvio/login.jsf')">
+                <div class="mod-num">03 — MPV</div>
+                <div class="mod-icon-wrap gold"><i class="fas fa-user-shield"></i></div>
+                <div class="mod-title">Mesa de Partes Virtual SGD</div>
+                <p class="mod-desc">Plataforma virtual integrada con el SGD para usuarios registrados, con gestión de trámites avanzada y altos estándares de seguridad.</p>
+                <button class="mod-btn"><i class="fas fa-external-link-alt"></i> Acceder a MPV</button>
+            </div>
+
+            <div class="mod-card reveal reveal-delay-1" onclick="openModule('https://10.1.119.20:9443/consulta/inicio.do')">
+                <div class="mod-num">04 — CONSULTA</div>
+                <div class="mod-icon-wrap teal"><i class="fas fa-search"></i></div>
+                <div class="mod-title">Consulta de Trámites</div>
+                <p class="mod-desc">Monitorea el estado de tus solicitudes en tiempo real. Control, transparencia y eficiencia en la gestión de trámites municipales.</p>
+                <button class="mod-btn"><i class="fas fa-external-link-alt"></i> Consultar Trámite</button>
+            </div>
+
+            <div class="mod-card reveal reveal-delay-2" onclick="openModule('https://10.1.119.20:9443/verifica/inicio.do')">
+                <div class="mod-num">05 — VERIFICA</div>
+                <div class="mod-icon-wrap green"><i class="fas fa-certificate"></i></div>
+                <div class="mod-title">Verificación de Documentos</div>
+                <p class="mod-desc">Valida la autenticidad de documentos digitales firmados electrónicamente por la municipalidad, asegurando su integridad y legitimidad.</p>
+                <button class="mod-btn"><i class="fas fa-external-link-alt"></i> Verificar Documento</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tutorials Section -->
+<section id="tutoriales" class="s">
+    <div class="container">
+        <div class="section-head reveal">
+            <div class="section-tag">Aprende</div>
+            <h2 class="section-title">Tutoriales y Capacitación</h2>
+            <p class="section-sub">Recursos de apoyo para que puedas sacar el máximo provecho de cada módulo del sistema.</p>
+        </div>
+
+        <div class="tut-grid">
+            <div class="tut-card reveal">
+                <div class="tut-icon-wrap"><i class="fas fa-play"></i></div>
+                <h3>Videos Tutoriales</h3>
+                <p>Contenido multimedia con videos explicativos claros y accesibles que orientan a los usuarios en el uso adecuado de cada módulo del sistema.</p>
+                <button class="btn btn-blue" onclick="alert('Videos tutoriales próximamente disponibles')">
+                    <i class="fas fa-video"></i> Ver Videos
+                </button>
+            </div>
+
+            <div class="tut-card reveal reveal-delay-1">
+                <div class="tut-icon-wrap" style="background: linear-gradient(135deg, var(--amber), var(--gold))"><i class="fas fa-file-pdf"></i></div>
+                <h3>Manuales PDF</h3>
+                <p>Accede a los manuales completos en formato PDF para consultar toda la información necesaria sobre el funcionamiento del sistema.</p>
+                <div class="pdf-btns">
+                    <button class="btn" onclick="openPDF('MANUAL DE USUARIO.pdf')">
+                        <i class="fas fa-download"></i> Manual de Usuario
+                    </button>
+                    <button class="btn" onclick="openPDF('MANUAL DE USUARIO  - MESA DE PARTES.pdf')">
+                        <i class="fas fa-download"></i> Manual Mesa de Partes
+                    </button>
+                </div>
+            </div>
+
+            <div class="tut-card reveal reveal-delay-2">
+                <div class="tut-icon-wrap" style="background: linear-gradient(135deg, #22AA64, #16C78A)"><i class="fas fa-question-circle"></i></div>
+                <h3>Soporte Técnico</h3>
+                <p>¿Tienes dudas o problemas técnicos? El equipo de Tecnologías de la Información está disponible para ayudarte.</p>
+                <a href="mailto:alcaldia@muniolleroshuarochiri.gob.pe" class="btn btn-blue">
+                    <i class="fas fa-envelope"></i> Contactar Soporte
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    <img src="logo.jpg" alt="Logo MDSDO" onerror="this.style.display='none'">
+                    <div class="footer-brand-name">Municipalidad Distrital de<br>Santo Domingo de los Olleros</div>
+                </div>
+                <p style="margin-bottom:1rem">Fortaleciendo la gestión municipal mediante la innovación tecnológica, con el objetivo de brindar servicios de calidad, eficientes y centrados en el ciudadano.</p>
+                <div class="social-row">
+                    <a href="https://www.facebook.com/MunicipalidadOllerosHuarochiri/" class="social-icon" target="_blank" rel="noopener" title="Facebook">
+                        <img src="facebook.png" alt="Facebook" style="width:18px;height:18px;object-fit:contain" onerror="this.parentElement.innerHTML='<i class=\'fab fa-facebook-f\'></i>'">
+                    </a>
+                    <a href="https://www.youtube.com/olleroshuarochiri" class="social-icon" target="_blank" rel="noopener" title="YouTube">
+                        <img src="youtube.png" alt="YouTube" style="width:18px;height:18px;object-fit:contain" onerror="this.parentElement.innerHTML='<i class=\'fab fa-youtube\'></i>'">
+                    </a>
+                    <a href="https://x.com/MuniOllerosHuar" class="social-icon" target="_blank" rel="noopener" title="X / Twitter">
+                        <img src="x.png" alt="X" style="width:18px;height:18px;object-fit:contain" onerror="this.parentElement.innerHTML='<i class=\'fab fa-x-twitter\'></i>'">
+                    </a>
+                    <a href="https://www.instagram.com/munisantodomingodelosolleros/" class="social-icon" target="_blank" rel="noopener" title="Instagram">
+                        <img src="instagram.png" alt="Instagram" style="width:18px;height:18px;object-fit:contain" onerror="this.parentElement.innerHTML='<i class=\'fab fa-instagram\'></i>'">
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-contact">
+                <h5>Contacto</h5>
+                <p><i class="fas fa-map-marker-alt"></i> Av. Santo Domingo de los Olleros Mza. E Lote. 6A Urb. Villa Jardín Cucuya, Lima — Huarochirí</p>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:alcaldia@muniolleroshuarochiri.gob.pe">alcaldia@muniolleroshuarochiri.gob.pe</a></p>
+                <p><i class="fas fa-clock"></i> Lunes a Viernes: 9:00 am – 5:00 pm</p>
+            </div>
+
+            <div>
+                <h5>Soporte Técnico</h5>
+                <p style="margin-bottom:.6rem"><i class="fas fa-laptop" style="color:var(--gold);margin-right:.5rem"></i>Oficina de Tecnologías de la Información</p>
+                <p style="margin-bottom:1.5rem"><i class="fas fa-clock" style="color:var(--gold);margin-right:.5rem"></i>Lunes a Viernes: 9:00 – 17:00 hrs</p>
+                <h5 style="margin-top:1.5rem">Acceso Rápido</h5>
+                <div style="display:flex;flex-direction:column;gap:.4rem">
+                    <a href="https://10.1.119.20:9443/sgd/login.do" target="_blank" rel="noopener">→ SGD - Funcionarios</a>
+                    <a href="https://10.1.119.20:9443/mpd/inicio.do" target="_blank" rel="noopener">→ Mesa de Partes Digital</a>
+                    <a href="https://10.1.119.20:9443/consulta/inicio.do" target="_blank" rel="noopener">→ Consulta de Trámites</a>
+                    <a href="https://10.1.119.20:9443/verifica/inicio.do" target="_blank" rel="noopener">→ Verificación de Documentos</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© <span id="current-year">2025</span> Municipalidad Distrital Santo Domingo de los Olleros — Oficina de TI</span>
+            <a href="index.html">Ir al inicio</a>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous" onerror="console.log('Bootstrap fallback')"></script>
+<script>
+// ── THEME ──────────────────────────────────────────────────
+function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('theme-icon').className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+    try { localStorage.setItem('theme', isDark ? 'light' : 'dark'); } catch(e){}
+}
+
+(function loadTheme() {
+    try {
+        const t = localStorage.getItem('theme');
+        if (t === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('theme-icon').className = 'fas fa-sun';
+        }
+    } catch(e){}
+})();
+
+// ── MOBILE MENU ────────────────────────────────────────────
+function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+}
+
+// Close menu on link click
+document.querySelectorAll('#navLinks a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+});
+
+// ── MODULE / PDF OPEN ──────────────────────────────────────
+function openModule(url) { if(url) window.open(url, '_blank', 'noopener,noreferrer'); }
+function openPDF(file) { window.open(file, '_blank', 'noopener,noreferrer'); }
+
+// ── PROGRESS BAR ───────────────────────────────────────────
+window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+});
+
+// ── ACTIVE NAV ─────────────────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-links a');
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            navAs.forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+            });
+        }
+    });
+}, { threshold: .3 });
+
+sections.forEach(s => observer.observe(s));
+
+// ── SCROLL REVEAL ──────────────────────────────────────────
+const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .12 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ── YEAR ───────────────────────────────────────────────────
+document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
